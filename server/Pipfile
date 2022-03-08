@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pydantic = "*"
+sqlalchemy = "*"
+alembic = "*"
+passlib = {extras = ["bcrypt"], version = "*"}
+python-jose = {extras = ["cryptography"], version = "*"}
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
