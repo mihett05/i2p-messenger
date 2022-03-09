@@ -11,7 +11,8 @@ def controller(action: str):
             actions[action] = {
                 "msg": args["data"],
                 "handler": func,
-                "need_transport": "transport" in args
+                "need_transport": "transport" in args,
+                "need_db": "db" in args,
             }
         return func
     return decorator

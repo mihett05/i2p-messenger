@@ -37,12 +37,18 @@ class Account(Base):
             return account
 
     @classmethod
-    def get_by_(cls, db: Session, account_id: int) -> Optional["Account"]:
+    def get_by_id(cls, db: Session, account_id: int) -> Optional["Account"]:
         return db.query(cls).filter(id=account_id).first()
 
     @classmethod
     def get_by_login(cls, db: Session, login: str) -> Optional["Account"]:
         return db.query(cls).filter(login=login).first()
+
+    @classmethod
+    def get_by_token(cls, db: Session, token: str) -> Optional["Account"]:
+        data = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+        if "sub" in data:
+            return cls.get_by_login(db, data["sub"])
 
     @classmethod
     def authenticate(cls, db: Session, login: str, password: str) -> Optional["Account"]:
@@ -56,4 +62,3 @@ class Account(Base):
             "exp": datetime.utcnow() + settings.JWT_EXPIRE
         }
         return jwt.encode(data, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
-

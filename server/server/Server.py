@@ -6,7 +6,7 @@ from asyncio import transports
 from messages import BaseMessage
 from controllers import actions
 
-from models import Base, engine
+from models import Base, engine, get_db
 
 
 class Server(asyncio.Protocol):
@@ -22,12 +22,16 @@ class Server(asyncio.Protocol):
             action = BaseMessage(**data).action
             if action in actions:
                 controller = actions[action]
+                db = None
 
                 args = {
                     "data": controller["msg"](**data),
                 }
                 if controller["need_transport"]:
                     args["transport"] = self.transport
+                if controller["need_db"]:
+                    db = get_db()
+                    args["db"] = db
 
                 response_data = controller["handler"](**args)
                 response = {
@@ -35,6 +39,9 @@ class Server(asyncio.Protocol):
                     "data": response_data
                 }
                 self.transport.write(response)
+
+                if db is not None:
+                    db.close()  # maybe exception
             else:
                 pass  # Should be error
         except (json.JSONDecodeError, pydantic.ValidationError):
