@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 from typing import Optional
 
-from . import Base, Account
+from .base import Base
+from .account import Account
 
 
 class Message(Base):

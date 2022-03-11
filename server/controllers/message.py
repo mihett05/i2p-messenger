@@ -36,7 +36,10 @@ class Subscribes:
         if account.login in self.subscribers:
             self.write_to_subscriber(account.login, {
                 "action": "subscription_closed",
-                "error": "Connection from another client"
+                "uid": "",
+                "data": {
+                    "error": "Connection from another client"
+                },
             })
             self.subscribers[account.login].close()
         self.subscribers[account.login] = transport
@@ -46,6 +49,7 @@ class Subscribes:
         if msg:
             data = {
                 "action": "subscribe_messages",
+                "uid": "",
                 "data": {
                     "from": sender.login,
                     "message": message,
@@ -69,7 +73,7 @@ def send_message(data: SendMessage, db: Session):
 @controller("get_unchecked_messages")
 def get_unchecked_messages(data: GetUncheckedMessages, db: Session):
     user = Account.get_by_token(db, data.token)
-    unchecked = db.query(Message).filter(checked=False, receiver=user.id).all()
+    unchecked = db.query(Message).filter(Message.checked == False, receiver=user.id).all()
     return {
         "ok": True,
         "messages": unchecked

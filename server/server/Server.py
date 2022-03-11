@@ -19,7 +19,8 @@ class Server(asyncio.Protocol):
         raw_data = data.decode()
         try:
             data = json.loads(raw_data)
-            action = BaseMessage(**data).action
+            msg = BaseMessage(**data)
+            action = msg.action
             if action in actions:
                 controller = actions[action]
                 db = None
@@ -36,14 +37,20 @@ class Server(asyncio.Protocol):
                 response_data = controller["handler"](**args)
                 response = {
                     "action": action,
+                    "uid": msg.uid,
                     "data": response_data
                 }
-                self.transport.write(response)
+                self.transport.write(json.dumps(response).encode("utf-8"))
 
                 if db is not None:
                     db.close()  # maybe exception
             else:
-                pass  # Should be error
+                response = {
+                    "action": action,
+                    "uid": msg.uid,
+                    "data": {}
+                }
+                self.transport.write(json.dumps(response).encode("utf-8"))
         except (json.JSONDecodeError, pydantic.ValidationError):
             pass
 

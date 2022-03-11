@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { createAccount, signInAccount } from '../api/account';
 import Layout from './Layout';
 
 function App() {
-  const [count, setCount] = useState(0);
-
+  useEffect(() => {
+    (async () => {
+      console.log(await signInAccount('123', '123'));
+    })();
+  }, []);
   return <Layout>123</Layout>;
 }
 

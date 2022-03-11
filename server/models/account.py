@@ -30,7 +30,7 @@ class Account(Base):
 
     @classmethod
     def create(cls, db: Session, login: str, password: str) -> Optional["Account"]:
-        if db.query(cls).filter(login=login).first() is None:
+        if db.query(cls).filter(cls.login == login).first() is None:
             account = cls(login=login, hashed_password=cls.hash_password(password))
             db.add(account)
             db.commit()
@@ -38,11 +38,11 @@ class Account(Base):
 
     @classmethod
     def get_by_id(cls, db: Session, account_id: int) -> Optional["Account"]:
-        return db.query(cls).filter(id=account_id).first()
+        return db.query(cls).filter(cls.id == account_id).first()
 
     @classmethod
     def get_by_login(cls, db: Session, login: str) -> Optional["Account"]:
-        return db.query(cls).filter(login=login).first()
+        return db.query(cls).filter(cls.login == login).first()
 
     @classmethod
     def get_by_token(cls, db: Session, token: str) -> Optional["Account"]:

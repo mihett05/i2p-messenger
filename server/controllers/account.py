@@ -7,9 +7,7 @@ def create_account_response(account: Account) -> dict:
     if account:
         return {
             "ok": True,
-            "data": {
-                "token": account.create_access_token()
-            }
+            "token": account.create_access_token()
         }
     return {
         "ok": False,
