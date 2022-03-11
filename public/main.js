@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const { createConnection } = require('./ipc');
+const { sequelize } = require('./models');
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -11,6 +12,7 @@ const createWindow = () => {
     },
   });
 
+  sequelize.sync();
   const client = createConnection('127.0.0.1', 8080);
 
   win.loadURL('http://localhost:3000');

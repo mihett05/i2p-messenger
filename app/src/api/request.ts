@@ -1,7 +1,6 @@
-//import { ipcRenderer } from 'electron';
-// @ts-ignore
-const { getIpcRenderer, ipcOnce } = window.electronApi;
 import { v4 as uuid4 } from 'uuid';
+
+const { getIpcRenderer, ipcOnce } = window.electronApi;
 
 export interface BaseDataResponse {
   ok: boolean;

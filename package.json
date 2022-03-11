@@ -13,7 +13,9 @@
   "repository": "git@github.com:mihett05/i2p-messenger.git",
   "dependencies": {
     "electron": "^17.1.2",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "sequelize": "^6.17.0",
+    "sqlite3": "^5.0.2"
   },
   "devDependencies": {
     "cross-env": "^7.0.3"
