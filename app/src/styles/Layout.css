@@ -1,5 +1,6 @@
 .chats-container::-webkit-scrollbar {
     width: 3px;
+    background-color: #011627;
 }
 
 .chats-container::-webkit-scrollbar-thumb {

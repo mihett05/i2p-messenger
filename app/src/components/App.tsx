@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createAccount, signInAccount } from '../api/account';
 import Storage from '../storage/storage';
 import Layout from './Layout';
+import Chat from './chat/Chat';
 
 function App() {
   useEffect(() => {
@@ -11,7 +12,11 @@ function App() {
       if (result !== null) Storage.setItem('token', result);
     })();
   }, []);
-  return <Layout>123</Layout>;
+  return (
+    <Layout>
+      <Chat />
+    </Layout>
+  );
 }
 
 export default App;

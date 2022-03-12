@@ -2,9 +2,9 @@ import React from 'react';
 import { Box } from '@chakra-ui/react';
 import ChatItem from './ChatItem';
 
-function Chats() {
+function ChatList() {
   return (
-    <div>
+    <Box bgColor="primary.100">
       {Array.from(Array(100)).map((_, i) => (
         <Box
           key={i}
@@ -19,8 +19,8 @@ function Chats() {
           <ChatItem name={`User ${i}`} lastMessage={`Blah-blah-blah-blah-blah`} />
         </Box>
       ))}
-    </div>
+    </Box>
   );
 }
 
-export default Chats;
+export default ChatList;

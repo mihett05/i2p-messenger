@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Container, Flex, Grid, GridItem } from '@chakra-ui/react';
 
-import Chats from './Chats';
+import ChatList from './chat/ChatList';
 import '../styles/Layout.css';
 
 interface LayoutProps {
@@ -11,7 +11,7 @@ interface LayoutProps {
 function Layout({ children }: LayoutProps) {
   return (
     <Flex>
-      <Container maxW="30%" px={0}>
+      <Container maxW="25%" px={0}>
         <nav
           className="chats-container"
           style={{
@@ -20,7 +20,7 @@ function Layout({ children }: LayoutProps) {
             height: '100vh',
           }}
         >
-          <Chats />
+          <ChatList />
         </nav>
       </Container>
 
