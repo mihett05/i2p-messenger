@@ -11,7 +11,7 @@ interface LayoutProps {
 function Layout({ children }: LayoutProps) {
   return (
     <Flex>
-      <Container maxW="25%" px={0}>
+      <Container maxW="25%" w="25%" px={0}>
         <nav
           className="chats-container"
           style={{
