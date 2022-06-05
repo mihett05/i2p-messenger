@@ -1,5 +1,5 @@
 import asyncio
-from server.Server import Server
+from server.server import Server
 
 
 if __name__ == "__main__":

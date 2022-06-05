@@ -2,11 +2,13 @@ import asyncio
 import json
 import pydantic
 from asyncio import transports
+from typing import Union
 
 from messages import BaseMessage
 from controllers import actions
 
 from models import Base, engine, get_db
+from .response import Response
 
 
 class Server(asyncio.Protocol):
@@ -35,24 +37,32 @@ class Server(asyncio.Protocol):
                     args["db"] = db
 
                 response_data = controller["handler"](**args)
-                response = {
-                    "action": action,
-                    "uid": msg.uid,
-                    "data": response_data
-                }
-                self.transport.write(json.dumps(response).encode("utf-8"))
-
+                self.write(action, msg.uid, response_data)
                 if db is not None:
                     db.close()  # maybe exception
             else:
-                response = {
-                    "action": action,
-                    "uid": msg.uid,
-                    "data": {}
-                }
-                self.transport.write(json.dumps(response).encode("utf-8"))
+                response = Response.create_error("Invalid action")
+                self.write(action, msg.uid, response)
         except (json.JSONDecodeError, pydantic.ValidationError):
             pass
+
+    def write(self, action: str, uid: str, response: Union[Response, dict]):
+        assert isinstance(response, Response) or isinstance(response, dict)
+
+        data: dict = None
+
+        if isinstance(response, Response):
+            data = response.get_data()
+        elif isinstance(response, dict):
+            data = response
+
+        message = {
+            "action": action,
+            "uid": uid,
+            "data": data
+        }
+
+        self.transport.write(json.dumps(message).encode("utf-8"))
 
     @classmethod
     async def run(cls):

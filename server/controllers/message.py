@@ -1,13 +1,12 @@
 import asyncio
 import json
 from typing import Dict
-from datetime import datetime
-from sqlalchemy import update
 from sqlalchemy.orm import Session
 
 from .base import controller
-from models import get_db, Message, Account
+from models import Message, Account
 from messages.message import SendMessage, SubscribeMessages, GetUncheckedMessages, SetCheckedMessages
+from server.response import Response
 
 
 class Subscribes:
@@ -65,19 +64,14 @@ class Subscribes:
 def send_message(data: SendMessage, db: Session):
     receiver = Account.get_by_token(db, data.token)
     sender = Account.get_by_login(db, data.receiver)
-    return {
-        "ok": Subscribes().send(db, sender, receiver, data.message),
-    }
+    return Response(ok=Subscribes().send(db, sender, receiver, data.message))
 
 
 @controller("get_unchecked_messages")
 def get_unchecked_messages(data: GetUncheckedMessages, db: Session):
     user = Account.get_by_token(db, data.token)
     unchecked = db.query(Message).filter(Message.checked == False, receiver=user.id).all()
-    return {
-        "ok": True,
-        "messages": unchecked
-    }
+    return Response(messages=unchecked)
 
 
 @controller("set_checked_messages")
@@ -91,15 +85,11 @@ def set_checked_messages(data: SetCheckedMessages, db: Session):
         .where(messages.c.checked == False)
         .values(checked=True)
     )
-    return {
-        "ok": True
-    }
+    return Response()
 
 
 @controller("subscribe_messages")
 def subscribe_messages(data: SubscribeMessages, db: Session, transport: asyncio.Transport):
     user = Account.get_by_token(db, data.token)
     Subscribes().subscribe(user, transport)
-    return {
-        "ok": True
-    }
+    return Response()
