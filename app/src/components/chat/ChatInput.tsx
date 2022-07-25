@@ -37,7 +37,7 @@ function ChatInput() {
           onChange={(v) => setText(v.target.value)}
         />
         <Center>
-          <IconButton aria-label="Send" icon={<ArrowForwardIcon />} size="sm" bgColor="primary.100" />
+          <IconButton aria-label="Send" icon={<ArrowForwardIcon />} size="sm" bgColor="primary.100" w="5vw" />
         </Center>
       </Flex>
     </Box>

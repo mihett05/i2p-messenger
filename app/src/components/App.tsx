@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { createAccount, signInAccount } from '../api/account';
 import Storage from '../storage/storage';
-import Layout from './Layout';
+
+import Auth from './auth/Auth';
+
+import ChatLayout from './chat/ChatLayout';
 import Chat from './chat/Chat';
 
 function App() {
@@ -9,13 +12,25 @@ function App() {
     console.log(Storage.getItem('token'));
     (async () => {
       const result = await signInAccount('123', '123');
+      console.log(result);
       if (result !== null) Storage.setItem('token', result);
     })();
   }, []);
+
   return (
-    <Layout>
+    <div
+      style={{
+        height: '100vh',
+      }}
+    >
+      <Auth />
+    </div>
+  );
+
+  return (
+    <ChatLayout>
       <Chat />
-    </Layout>
+    </ChatLayout>
   );
 }
 

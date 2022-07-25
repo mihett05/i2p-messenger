@@ -14,12 +14,6 @@ class Response:
     def __getitem__(self, key: str) -> Any:
         return self.get(key)
 
-    def __setattr__(self, key: str, value: Any):
-        self[key] = value
-
-    def __getattr__(self, key: str) -> Any:
-        return self[key]
-
     def get(self, key: str) -> Any:
         return self.data[key]
 
