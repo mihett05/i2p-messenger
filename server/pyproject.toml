@@ -5,12 +5,12 @@ description = ""
 authors = ["mihett05 <mihett05@yandex.ru>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
-pydantic = "^1.9.1"
+python = "^3.8"
 SQLAlchemy = "^1.4.39"
 alembic = "^1.8.1"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+pydantic = "^1.10.2"
 
 [tool.poetry.dev-dependencies]
 

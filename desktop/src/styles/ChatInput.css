@@ -1,0 +1,19 @@
+.chat-input-container {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.chat-input::-webkit-scrollbar {
+    width: 3px;
+    background-color: #011627;
+}
+
+.chat-input::-webkit-scrollbar-thumb {
+    background-color: #D0D0D0;
+    border-radius: 20px;
+}
+
+.chat-input::selection {
+    background-color: red;
+}
