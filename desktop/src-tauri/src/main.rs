@@ -6,7 +6,7 @@
 use std::sync::Mutex;
 
 use tauri::Manager;
-use tauri_plugin_store;
+use tauri_plugin_sql::TauriSql;
 
 mod commands;
 mod connection;
@@ -15,7 +15,7 @@ use connection::Connection;
 
 fn main() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_store::PluginBuilder::default().build())
+        .plugin(TauriSql::default())
         .setup(|app| {
             let app_handle = app.handle();
             tauri::async_runtime::spawn(async move {

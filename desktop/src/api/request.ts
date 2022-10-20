@@ -1,9 +1,6 @@
 import { v4 as uuid4 } from 'uuid';
-
-const { getIpcRenderer, ipcOnce } = {
-  getIpcRenderer: null,
-  ipcOnce: null
-};
+import { once } from '@tauri-apps/api/event';
+import { invoke } from '@tauri-apps/api';
 
 export interface BaseDataResponse {
   ok: boolean;
@@ -16,17 +13,26 @@ export interface BaseResponse<T = BaseDataResponse> {
   data: T;
 }
 
+interface ServerMessage {
+  message: string; // json
+}
+
 export const request = <T = BaseDataResponse>(action: string, data: any): Promise<BaseResponse<T>> => {
   const uid = uuid4();
-  getIpcRenderer().send('send-data', {
-    action,
-    uid,
-    ...data,
-  });
-  return new Promise((resolve, reject) => {
-    // TODO: reject and error handling
-    ipcOnce(uid, (event: any, data: BaseResponse<T>) => {
-      resolve(data);
-    });
-  });
+
+  return invoke('send_request', {
+    data: JSON.stringify({
+      action,
+      uid,
+      data,
+    }),
+  }).then(
+    () =>
+      new Promise<BaseResponse<T>>((resolve, reject) => {
+        once<ServerMessage>('server_message', (event) => {
+          const response = JSON.parse(event.payload.message) as BaseResponse<T>;
+          if (response.uid === uid) resolve(response);
+        }).catch(reject);
+      }),
+  );
 };

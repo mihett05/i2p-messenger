@@ -24,6 +24,11 @@ tokio = { version = "1.21.2", features = ["net"] }
 git = "https://github.com/tauri-apps/tauri-plugin-store"
 branch = "dev"
 
+[dependencies.tauri-plugin-sql]
+git = "https://github.com/tauri-apps/tauri-plugin-sql"
+branch = "dev"
+features = ["sqlite"]
+
 [features]
 # by default Tauri runs in production mode
 # when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL

@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.i2p-messenger",
+      "identifier": "i2p-messenger",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
