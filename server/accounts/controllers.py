@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from .base import controller
-from messages.account import CreateAccount, SigninAccount
-from models import Account
+from server import controller
+from .dtos import CreateAccount, SigninAccount
+from .models import Account
 from server.response import Response
 
 
@@ -10,7 +10,7 @@ def create_account_response(account: Account) -> Response:
         return Response(
             token=account.create_access_token(),
             id=account.id,
-            login=account.login
+            login=account.username
         )
     return Response.create_error("Can't create account")
 

@@ -5,8 +5,9 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from models import Base
+from server import Base
 from server.settings import get_settings
+from server.modules import attach_modules
 
 settings = get_settings()
 
@@ -18,19 +19,12 @@ config = context.config
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
 
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
+
 config.set_main_option(
     "sqlalchemy.url", settings.DATABASE_URL
 )
+attach_modules()  # load all models before setting metadata
 target_metadata = Base.metadata
-
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
 
 
 def run_migrations_offline():

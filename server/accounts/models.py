@@ -7,7 +7,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm.session import Session
 
 from server.settings import get_settings
-from .base import Base
+from server import Base
 
 
 pwd_context = CryptContext(schemes=["bcrypt"])
@@ -18,7 +18,7 @@ class Account(Base):
     __tablename__ = "accounts"
 
     id = Column(Integer, primary_key=True, index=True)
-    login = Column(String, unique=True, index=True)
+    username = Column(String, unique=True, index=True)
     hashed_password = Column(String)
 
     @staticmethod
@@ -30,7 +30,7 @@ class Account(Base):
 
     @classmethod
     def create(cls, db: Session, login: str, password: str) -> Optional["Account"]:
-        if db.query(cls).filter(cls.login == login).first() is None:
+        if not db.query(cls).filter(cls.username == login).first():
             account = cls(login=login, hashed_password=cls.hash_password(password))
             db.add(account)
             db.commit()
@@ -42,7 +42,7 @@ class Account(Base):
 
     @classmethod
     def get_by_login(cls, db: Session, login: str) -> Optional["Account"]:
-        return db.query(cls).filter(cls.login == login).first()
+        return db.query(cls).filter(cls.username == login).first()
 
     @classmethod
     def get_by_token(cls, db: Session, token: str) -> Optional["Account"]:
@@ -58,7 +58,7 @@ class Account(Base):
 
     def create_access_token(self):
         data = {
-            "sub": self.login,
+            "sub": self.username,
             "exp": datetime.utcnow() + settings.JWT_EXPIRE
         }
         return jwt.encode(data, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)

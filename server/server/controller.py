@@ -16,4 +16,3 @@ def controller(action: str):
             }
         return func
     return decorator
-

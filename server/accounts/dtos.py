@@ -1,4 +1,4 @@
-from .base import BaseMessage
+from server import BaseMessage
 
 
 class BaseAccount(BaseMessage):

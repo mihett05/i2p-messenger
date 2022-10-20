@@ -1,5 +1,5 @@
 from typing import List
-from .base import TokenMessage
+from server import TokenMessage
 
 
 class SendMessage(TokenMessage):
