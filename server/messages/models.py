@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, ForeignKey, String, Boolean, DateTime
 from sqlalchemy.orm import Session
+from pydantic import BaseModel
 from datetime import datetime
 
 from server import Base
@@ -53,3 +54,15 @@ class Message(Base):
     def delete(self, db: Session):
         db.delete(self)
         db.commit()
+
+
+class MessageDto(BaseModel):
+    id: int
+    sender: str
+    sender_host: str
+    receiver: int
+    message: str
+    checked: bool
+
+    class Config:
+        orm_mode = True

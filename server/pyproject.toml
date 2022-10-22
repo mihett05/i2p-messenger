@@ -11,6 +11,7 @@ alembic = "^1.8.1"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 pydantic = "^1.10.2"
+asyncio-dgram = "^2.1.2"
 
 [tool.poetry.dev-dependencies]
 
